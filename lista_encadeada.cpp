@@ -14,39 +14,110 @@ typedef struct pessoa {
     pessoa *proximo;
 }pessoa;
 
-//ainda vou dá um nome mais apropriado para isso visto que eu haverá outras funções assim como no exercício de lista sequencial
-void add_lista(pessoa *&lista, string nome, int cpf) {
-    if (lista == NULL) {
-        lista = new pessoa;
-        lista->nome = nome;
-        lista->cpf = cpf;
-        lista->proximo = NULL;
+
+void criar_lista(pessoa *&lista, string nome, int cpf) {
+    lista = new pessoa;
+    lista->nome = nome;
+    lista->cpf = cpf;
+    lista->proximo = nullptr;
+}
+
+int tamanho_lista(pessoa *lista) {
+    int tamanho = 0;
+    pessoa *aux = lista;
+
+    while (aux != nullptr) {
+        aux = aux->proximo;
+        tamanho = tamanho + 1;
+    }
+    return  tamanho;
+}
+
+void add_inicio_lista(pessoa *&lista, string nome, int cpf) {
+    if (lista == nullptr) {
+        criar_lista(lista, nome, cpf);
     }else {
         pessoa *novo_valor = new pessoa;
         novo_valor->nome = nome;
         novo_valor->cpf = cpf;
-        novo_valor->proximo = NULL;
+
+        novo_valor->proximo = lista;
+        lista = novo_valor;
+    }
+}
+
+void add_fim_lista(pessoa *&lista, string nome, int cpf) {
+    if (lista == nullptr) {
+        criar_lista(lista, nome, cpf);
+    }else {
+        pessoa *novo_valor = new pessoa;
+        novo_valor->nome = nome;
+        novo_valor->cpf = cpf;
+        novo_valor->proximo = nullptr;
 
         pessoa *aux = lista;
-        while (aux->proximo != NULL) {
+        while (aux->proximo != nullptr) {
             aux = aux->proximo;
         }
         aux->proximo = novo_valor;
     }
 }
 
+void add_lista_index(int index, pessoa *&lista, string nome, int cpf) {
+    if (lista == nullptr) {
+        criar_lista(lista, nome, cpf);
+    }
+
+    if (index < 0 || index > tamanho_lista(lista)) {
+        cout << "\nIndex " << index << ": posicao invalida!\n";
+        return;
+    }
+
+    if (index == 0) {
+        add_inicio_lista(lista, nome, cpf);
+        return;
+    }
+
+    if (index == tamanho_lista(lista)) {
+        add_fim_lista(lista, nome, cpf);
+        return;
+    }
+
+    pessoa *novo_valor = new pessoa;
+    novo_valor->nome = nome;
+    novo_valor->cpf = cpf;
+
+    pessoa *proximo_valor = lista;
+    pessoa *valor_anterior = nullptr;
+
+    int i=0;
+    while (proximo_valor != nullptr && i < index) {
+        valor_anterior = proximo_valor;
+        proximo_valor = proximo_valor->proximo;
+        i++;
+    }
+
+    valor_anterior->proximo = novo_valor;
+    novo_valor->proximo = proximo_valor;
+}
+
+
+
 
 void imprimir_lista(pessoa *lista) {
-    while (lista != NULL) {
-        cout << "Nome: " << lista->nome
+    int i=0;
+    while (lista != nullptr) {
+        cout << "Valor: " << i
+             << " Nome: " << lista->nome
              << " | CPF: " << lista->cpf << endl;
         lista = lista->proximo;
+        i++;
     }
     cout << "--------------------------------\n";
 }
 
 void liberar_lista(pessoa *&lista) {
-    while (lista != NULL) {
+    while (lista != nullptr) {
         pessoa *aux = lista;
         lista = lista->proximo;
         delete aux;
@@ -54,16 +125,17 @@ void liberar_lista(pessoa *&lista) {
 }
 
 int main(){
-    pessoa *lista = NULL;
-    //int tamanho;
+    pessoa *lista = nullptr;
+
 
     Clear();
-    add_lista(lista, "Eduardo", 3);
-    add_lista(lista, "Edward", 56);
-    add_lista(lista, "Ed", 78);
+    add_fim_lista(lista, "Eduardo", 3);
+    add_fim_lista(lista, "Edward", 56);
+    add_fim_lista(lista, "Ed", 78);
+    add_inicio_lista(lista, "Sim", 1);
+    add_lista_index(1, lista, "Meio", 22);
 
     imprimir_lista(lista);
-
 
     liberar_lista(lista);
     return 0;
