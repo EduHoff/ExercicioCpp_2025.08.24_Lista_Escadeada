@@ -64,12 +64,13 @@ void add_fim_lista(pessoa *&lista, string nome, int cpf) {
 }
 
 void add_lista_index(int index, pessoa *&lista, string nome, int cpf) {
-    if (lista == nullptr) {
-        criar_lista(lista, nome, cpf);
-    }
-
     if (index < 0 || index > tamanho_lista(lista)) {
         cout << "\nIndex " << index << ": posicao invalida!\n";
+        return;
+    }
+
+    if (lista == nullptr) {
+        criar_lista(lista, nome, cpf);
         return;
     }
 
@@ -102,7 +103,33 @@ void add_lista_index(int index, pessoa *&lista, string nome, int cpf) {
 }
 
 
+void remove_inicio_lista(pessoa *&lista) {
+    if (lista == nullptr) {
+        cout << "\nLista ja esta vazia!";
+    }else {
+        pessoa *aux = lista;
+        lista = lista->proximo;
+        delete aux;
+     }
+}
 
+void remove_fim_lista(pessoa *&lista) {
+    if (lista == nullptr) {
+        cout << "\nLista ja esta vazia!";
+    }else {
+
+        //preciso de dois ponteiros, vou continar a fazer isso outro dia
+        pessoa *aux1 = nullptr;
+        pessoa *aux2 = nullptr;
+
+
+        while (lista->proximo != nullptr) {
+
+        }
+
+        //algo aqui
+    }
+}
 
 void imprimir_lista(pessoa *lista) {
     int i=0;
@@ -128,13 +155,17 @@ int main(){
     pessoa *lista = nullptr;
 
 
+
     Clear();
     add_fim_lista(lista, "Eduardo", 3);
     add_fim_lista(lista, "Edward", 56);
     add_fim_lista(lista, "Ed", 78);
     add_inicio_lista(lista, "Sim", 1);
-    add_lista_index(1, lista, "Meio", 22);
+    add_lista_index(4, lista, "Meio", 22);
+    imprimir_lista(lista);
 
+    remove_inicio_lista(lista);
+    remove_fim_lista(lista);
     imprimir_lista(lista);
 
     liberar_lista(lista);
