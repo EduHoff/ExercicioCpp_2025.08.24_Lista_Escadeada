@@ -118,16 +118,28 @@ void remove_fim_lista(pessoa *&lista) {
         cout << "\nLista ja esta vazia!";
     }else {
 
-        //preciso de dois ponteiros, vou continar a fazer isso outro dia
-        pessoa *aux1 = nullptr;
-        pessoa *aux2 = nullptr;
-
-
-        while (lista->proximo != nullptr) {
-
+        if (tamanho_lista(lista) == 1) {
+            remove_inicio_lista(lista);
+            return;
         }
 
-        //algo aqui
+        //preciso de dois ponteiros, vou continar a fazer isso outro dia
+        pessoa *aux1 = lista;
+        pessoa *aux2 = nullptr;
+
+        int i=0;
+        while (aux1->proximo != nullptr) {
+            if (i == tamanho_lista(lista) - 2) {
+                cout << "\nAqui: "<< aux1->nome << endl;
+                break;
+            }
+            aux1 = aux1->proximo;
+            i++;
+        }
+
+        aux2 = aux1->proximo;
+        aux1->proximo = nullptr;
+        delete aux2;
     }
 }
 
