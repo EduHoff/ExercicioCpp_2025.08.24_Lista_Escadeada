@@ -123,14 +123,11 @@ void remove_fim_lista(pessoa *&lista) {
             return;
         }
 
-        //preciso de dois ponteiros, vou continar a fazer isso outro dia
         pessoa *aux1 = lista;
         pessoa *aux2 = nullptr;
-
         int i=0;
         while (aux1->proximo != nullptr) {
             if (i == tamanho_lista(lista) - 2) {
-                cout << "\nAqui: "<< aux1->nome << endl;
                 break;
             }
             aux1 = aux1->proximo;
@@ -141,6 +138,47 @@ void remove_fim_lista(pessoa *&lista) {
         aux1->proximo = nullptr;
         delete aux2;
     }
+}
+
+void remove_lista_index(int index, pessoa *&lista) {
+
+    if (index < 0 || index > tamanho_lista(lista)-1) {
+        cout << "\nIndex " << index << ": posicao invalida!\n";
+        return;
+    }
+
+    if (lista == nullptr) {
+        cout << "\nLista ja esta vazia!";
+        return;
+    }
+
+    if (index == 0) {
+        remove_inicio_lista(lista);
+        return;
+    }
+
+    if (index == tamanho_lista(lista) - 1) {
+        remove_fim_lista(lista);
+        return;
+    }
+
+
+    pessoa *aux1 = lista;
+    pessoa *aux2 = nullptr;
+    int i=0;
+    while (aux1->proximo != nullptr) {
+        if (i == index - 1) {
+            break;
+        }
+        aux1 = aux1->proximo;
+        i++;
+    }
+
+    aux2 = aux1->proximo;
+    aux1->proximo = aux1->proximo->proximo;
+    delete aux2;
+
+
 }
 
 void imprimir_lista(pessoa *lista) {
@@ -178,6 +216,7 @@ int main(){
 
     remove_inicio_lista(lista);
     remove_fim_lista(lista);
+    remove_lista_index(2, lista);
     imprimir_lista(lista);
 
     liberar_lista(lista);
